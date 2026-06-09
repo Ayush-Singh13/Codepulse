@@ -26,7 +26,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CodePulseConnectionString"));
+    options.UseNpgsql(connectionString);
 });
 
 
@@ -69,7 +69,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+builder.WebHost.UseUrls($"http://*:{port}");
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
